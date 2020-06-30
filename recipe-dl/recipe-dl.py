@@ -261,7 +261,7 @@ def strip_tags(str, strip_newline = False):
         ret_value = re.sub('\n', ' ', ret_value)
     ret_value = re.sub(' \/\/ ', ' / ', ret_value)
     ret_value = re.sub('\)\)', ')', ret_value)
-    ret_value = re.sub('\(\(', '\(', ret_value)
+    ret_value = re.sub('\(\(', '(', ret_value)
     ret_value = re.sub(r'\s+', ' ', ret_value)
     return ret_value.strip()
 
@@ -753,7 +753,7 @@ def url2recipe_json(args, url):
         else:
             recipe_json = epicurious2json(args, url)
     elif domain == 'www.saveur.com':
-        recipe_json = recipe_scraper2json(args, url)
+        recipe_json = saveur2json(args, url)
     else:
         if args.force_recipe_scraper:
             try:
