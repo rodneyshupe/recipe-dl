@@ -7,8 +7,8 @@ default output format.
 ## Usage
 
 ```
-usage: recipe-dl [-h] [-v] [-a] [-d] [-q] [-j] [-m] [-r] [--i INFILE]
-                 [--o OUTFILE] [-s]
+usage: recipe-dl [-h] [-v] [-a] [-d] [-q] [-j] [-m] [-r] [-i INFILE]
+                 [-o OUTFILE] [-s]
                  [URL [URL ...]]
 
 positional arguments:
@@ -23,9 +23,9 @@ optional arguments:
   -j, --output-json     Output results in JSON format.
   -m, --output-md       Output results in Markdown format.
   -r, --output-rst      Output results in reStructuredText format.
-  --i INFILE, --infile INFILE
+  -i INFILE, --infile INFILE
                         Specify input json file infile.
-  --o OUTFILE, --outfile OUTFILE
+  -o OUTFILE, --outfile OUTFILE
                         Specify output file outfile.
   -s, --save-to-file    Save output file(s).
   ```

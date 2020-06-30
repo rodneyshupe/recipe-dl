@@ -81,7 +81,7 @@ def parse_arguments(print_usage = False, detail = False):
         help="Output results in reStructuredText format.",
     )
     parser.add_argument(
-        '--i',
+        '-i',
         '--infile',
         action="store",
         dest="infile",
