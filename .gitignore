@@ -127,3 +127,20 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Exclude all Markdown,  reStructuredText and JSON files.
+*.md
+*.rst
+*.json
+
+# Exclude Cookie data
+*.cookies
+
+# Except for README files
+!README.md
+!README.rst
+
+# Files related to tests
+test.output.*
+test.failures.log
+*.tests
