@@ -102,6 +102,14 @@ def parse_arguments(print_usage = False, detail = False):
         default=False,
         help="Save output file(s).",
     )
+    parser.add_argument(
+        "-f",
+        "--force-recipe-scraper",
+        action="store_true",
+        dest="force_recipe_scraper",
+        default=False,
+        help="For the use of the recipe scraper where applicable.",
+    )
 
     parser.add_argument('URL', nargs='*', action="append", default=[],)
 
@@ -510,7 +518,7 @@ def epicurious2json(args, url):
                         raw_json_text = re.sub('"password":{"regExp":.*,"messages"', '"password":{"regExp":""},"messages"', raw_json_text)
                         raw_json = json.loads(raw_json_text)
                         return_value = json_clean_value(raw_json, 'content', json.loads('{}'))
-                        print_debug(args, json.dumps(return_value, indent=4))
+                        #print_debug(args, json.dumps(return_value, indent=4))
         return return_value
 
     print_debug(args, "Using Epicurious scraper...")
@@ -581,6 +589,8 @@ def epicurious2json(args, url):
 
 def recipe_scraper2json(args, url):
     from recipe_scrapers import scrape_me
+
+    print_debug(args, "Using recipe-scraper module...")
 
     recipe_json={}
     recipe_json['url'] = url
@@ -735,11 +745,23 @@ def url2recipe_json(args, url):
     if domain in [ 'www.americatestkitchen.com','www.cookscountry.com','www.cooksillustrated.com' ]:
         recipe_json = ci2json(args, url)
     elif domain == 'www.epicurious.com':
-        recipe_json = epicurious2json(args, url)
+        if args.force_recipe_scraper:
+            try:
+                recipe_json = recipe_scraper2json(args, url)
+            except:
+                recipe_json = epicurious2json(args, url)
+        else:
+            recipe_json = epicurious2json(args, url)
     elif domain == 'www.saveur.com':
-        recipe_json = saveur2json(args, url)
+        recipe_json = recipe_scraper2json(args, url)
     else:
-        recipe_json = generic2json(args, url)
+        if args.force_recipe_scraper:
+            try:
+                recipe_json = recipe_scraper2json(args, url)
+            except:
+                recipe_json = generic2json(args, url)
+        else:
+            recipe_json = generic2json(args, url)
     return recipe_json
 
 def format2text(format):
