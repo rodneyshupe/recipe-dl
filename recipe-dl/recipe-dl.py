@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import sys, os
 import argparse
@@ -110,6 +111,12 @@ def parse_arguments(print_usage = False, detail = False):
         default=False,
         help="For the use of the recipe scraper where applicable.",
     )
+    parser.add_argument(
+        "--quick-tests",
+        action="store_true",
+        dest="quick_tests",
+        default=False
+    )
 
     parser.add_argument('URL', nargs='*', action="append", default=[],)
 
@@ -164,7 +171,7 @@ def url2publisher(url):
     elif domain == 'www.epicurious.com':
         publisher = "Epicurious"
     elif domain == 'www.bonappetit.com':
-        publisher = "Bon Appétit"
+        publisher = "Bon Appetit"
     elif domain == 'www.foodnetwork.com':
         publisher = "Food Network"
     elif domain == 'cooking.nytimes.com':
@@ -626,12 +633,13 @@ def generic2json(args, url):
         return_value = None
         page = requests.get(url)
 
-        match = re.search(r'<script[^>]*type=.application/ld\+json.[^>]*>', page.text)
+        match = re.search(r'<script[^>]*type=.?application/ld\+json.?[^>]*>', page.text)
         if match:
             soup = BeautifulSoup(page.text, 'html5lib')
             scripts = soup.findAll('script', attrs = {'type':'application/ld+json'})
             for script in scripts:
-                raw_json = json.loads(script.text)
+                json_stripped=re.sub('^[^\{\[]*', '', script.text)
+                raw_json = json.loads(json_stripped)
                 if type(raw_json) == list:
                     return_value = json_find_array_element(raw_json, '@type', 'Recipe')
                     try:
@@ -978,27 +986,29 @@ def quick_tests(args):
         'https://www.saveur.com/perfect-brown-rice-recipe/',
         'https://www.thechunkychef.com/easy-slow-cooker-mongolian-beef-recipe'
     ]
-    for test in tests:
+    for test_url in tests:
         print_info (args, "==========================")
-        print_info (args, recipe_output(args, url2recipe_json(test)))
+        recipe_output(args, url2recipe_json(args, test_url))
         print_info (args, "==========================")
 
 def main(args):
     print_debug (args, args)
-
-    if not args.URL == [[]]:
-        for url in args.URL[0]:
-            recipe_json = url2recipe_json(args, url)
-            recipe_output(args, recipe_json)
+    if args.quick_tests:
+        quick_tests(args)
     else:
-        if not args.infile is None and args.infile != "":
-            print_info (args, "Processsing %s..." % args.infile)
-            with open(args.infile) as json_file:
-                recipe_json = json.load(json_file)
+        if not args.URL == [[]]:
+            for url in args.URL[0]:
+                recipe_json = url2recipe_json(args, url)
                 recipe_output(args, recipe_json)
         else:
-            print_error (args,"You must specify an input URL or input JSON file.\n")
-            parse_arguments(print_usage=True)
+            if not args.infile is None and args.infile != "":
+                print_info (args, "Processsing %s..." % args.infile)
+                with open(args.infile) as json_file:
+                    recipe_json = json.load(json_file)
+                    recipe_output(args, recipe_json)
+            else:
+                print_error (args,"You must specify an input URL or input JSON file.\n")
+                parse_arguments(print_usage=True)
 
 if __name__ == '__main__':
     args = parse_arguments()
