@@ -1,5 +1,5 @@
-import 'recipe-dl'
+import recipe_dl
 
 def main():
     """Entry point for the application script"""
-    'recipe-dl'.main
+    recipe_dl.main

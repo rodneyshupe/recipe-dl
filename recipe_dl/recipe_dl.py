@@ -9,17 +9,16 @@ import requests
 import re
 import json
 
-import iso8601
-
 import textwrap
 
+import iso8601
 from CustomExceptions import Error, UrlError
 from CustomPrint import print_info, print_debug, print_error, print_warning, print_to_console
 
 from lxml import html
 from bs4 import BeautifulSoup
 
-__version__ = '0.1.0'
+__version__ = '0.0.2'
 __author__ = u'Rodney Shupe'
 
 def parse_arguments(print_usage = False, detail = False):
