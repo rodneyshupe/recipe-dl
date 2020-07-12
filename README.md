@@ -42,6 +42,11 @@ Currently this has been tested for the following sites:
 * [CookingChannelTV.com](www.cookingchanneltv.com)
 
 ## Install
+Install using pip
+```sh
+python -m pip install git+https://github.com/rodneyshupe/recipe-dl.git
+```
+<!--
 Copy recipe-dl.sh to /opt.
 ```sh
 curl https://raw.githubusercontent.com/rodneyshupe/recipe-dl/master/recipe-dl.sh --output /opt/recipe-dl.sh && chmod + x /opt/recipe-dl.sh
@@ -53,3 +58,4 @@ Create symbolic links to somewhere on the path.
 ln -s /opt/rst2recipe.sh /usr/local/bin/rst2recipe
 ln -s /opt/rst2recipe.sh /usr/local/bin/rst2recipe
 ```
+-->

@@ -1,3 +1,17 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+#
+# # Clean the previous build package
+# python setup.py clean --all
+#
+# # Create build package
+# python setup.py sdist bdist_wheel
+#
+# # Install from local package
+# pip3 install .
+#
+
 import os
 from setuptools import setup, find_packages
 
@@ -10,9 +24,13 @@ def read(fname):
 
 setup(
     name = 'recipe-dl',
-    packages = find_packages(include=['recipe_dl', 'recipe_dl/iso8601', 'recipe_dl/CustomPrint'], exclude=['*.rst', '*.txt', '*.md']),
-    version = '0.0.3',
-    license = "BSD",
+    packages = find_packages(
+        include=['recipe_dl', 'recipe_dl.*'],
+        exclude=['*.rst', '*.txt', '*.md']
+    ),
+    #packages=['recipe_dl', 'recipe_dl.iso8601', 'recipe_dl.CustomPrint', 'recipe_dl.CustomExceptions'],
+    version = '0.1.0',
+    license = "GNU General Public License v3.0",
     description = 'Recipe Downloader - Download Recipies from many websites and output as JSON, Markdown or reStructuredText.',
     long_description=read('README.md'),
     long_description_content_type="text/markdown",
@@ -30,8 +48,6 @@ setup(
         "Programming Language :: Python :: 3",
         "Development Status :: 3 - Alpha",
         "Topic :: Utilities",
-        "License :: OSI Approved :: BSD License",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     ],
 )
-
-# packages=find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
