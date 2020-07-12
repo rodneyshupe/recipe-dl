@@ -18,7 +18,7 @@ from CustomPrint import print_info, print_debug, print_error, print_warning, pri
 from lxml import html
 from bs4 import BeautifulSoup
 
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 __author__ = u'Rodney Shupe'
 
 def parse_arguments(print_usage = False, detail = False):

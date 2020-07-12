@@ -11,7 +11,7 @@ def read(fname):
 setup(
     name = 'recipe-dl',
     packages = find_packages(include=['recipe_dl'], exclude=['*.rst', '*.txt', '*.md']),
-    version = '0.0.2',
+    version = '0.0.3',
     license = "BSD",
     description = 'Recipe Downloader - Download Recipies from many websites and output as JSON, Markdown or reStructuredText.',
     long_description=read('README.md'),
