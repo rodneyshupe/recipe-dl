@@ -11,6 +11,7 @@ import json
 
 import textwrap
 
+sys.path.append(os.path.dirname(__file__))
 import iso8601
 from CustomExceptions import Error, UrlError
 from CustomPrint import print_info, print_debug, print_error, print_warning, print_to_console
@@ -18,7 +19,7 @@ from CustomPrint import print_info, print_debug, print_error, print_warning, pri
 from lxml import html
 from bs4 import BeautifulSoup
 
-__version__ = '0.0.3'
+__version__ = '0.0.4'
 __author__ = u'Rodney Shupe'
 
 def parse_arguments(print_usage = False, detail = False):
@@ -261,6 +262,11 @@ def strip_tags(str, strip_newline = False):
     ret_value = re.sub('\&nbsp\;', ' ', ret_value)
     ret_value = re.sub('\&\#8217\;', '\'', ret_value)
     ret_value = re.sub('\&\#39\;', '\'', ret_value)
+    ret_value = ret_value.replace(u"¼", u" 1/4")
+    ret_value = ret_value.replace(u"½", u" 1/2")
+    ret_value = ret_value.replace(u"¾", u" 3/4")
+    ret_value = ret_value.replace(u"⅓", u" 1/3")
+    ret_value = ret_value.replace(u"⅔", u" 2/3")
     ret_value = re.sub('\r', '', ret_value)
     ret_value = re.sub('\t', ' ', ret_value)
     if strip_newline:
