@@ -991,7 +991,10 @@ def quick_tests(args):
         recipe_output(args, url2recipe_json(args, test_url))
         print_info (args, "==========================")
 
-def main(args):
+def main(args=None):
+    if args is None:
+        args = parse_arguments()
+
     print_debug (args, args)
     if args.quick_tests:
         quick_tests(args)
