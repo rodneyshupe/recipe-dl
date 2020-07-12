@@ -1,16 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#
-# # Clean the previous build package
-# python setup.py clean --all
-#
-# # Create build package
-# python setup.py sdist bdist_wheel
-#
-# # Install from local package
-# pip3 install .
-#
+"""
+
+git tag -a v0.1.0 -m "v0.1.0"       # Set github tag
+python setup.py clean --all         # Clean the previous build package
+python setup.py sdist bdist_wheel   # Create build package
+pip3 install .                      # Install from local package
+git push origin v0.1.0
+"""
 
 import os
 from setuptools import setup, find_packages
