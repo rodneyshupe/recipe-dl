@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 def to_minutes( iso8601_duration ):
     """ Take iso8601 duration and returns minutes
         (rounded down to whole minute)

@@ -3,11 +3,11 @@
 
 """
 
-git tag -a v0.1.0 -m "v0.1.0"       # Set github tag
+git tag -a v0.1.2 -m "v0.1.2"       # Set github tag
 python setup.py clean --all         # Clean the previous build package
 python setup.py sdist bdist_wheel   # Create build package
 pip3 install .                      # Install from local package
-git push origin v0.1.0
+git push origin v0.1.2
 """
 
 import os
@@ -20,6 +20,10 @@ from setuptools import setup, find_packages
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
+def required():
+    with open('requirements.txt') as f:
+        return f.read().splitlines()
+
 setup(
     name = 'recipe-dl',
     packages = find_packages(
@@ -27,7 +31,8 @@ setup(
         exclude=['*.rst', '*.txt', '*.md']
     ),
     #packages=['recipe_dl', 'recipe_dl.iso8601', 'recipe_dl.CustomPrint', 'recipe_dl.CustomExceptions'],
-    version = '0.1.0',
+    install_requires=required(),
+    version = '0.1.2',
     license = "GNU General Public License v3.0",
     description = 'Recipe Downloader - Download Recipies from many websites and output as JSON, Markdown or reStructuredText.',
     long_description=read('README.md'),
@@ -35,7 +40,6 @@ setup(
     author = 'Rodney Shupe',
     author_email = 'rodney@shupe.ca',
     url = 'https://github.com/rodneyshupe/recipe-dl',
-    download_url = 'https://github.com/rodneyshupe/recipe-dl/tarball/1.0',
     keywords = ['recipe', 'download', 'json', 'markdown', 'md', 'restructuredtext', 'rst', 'convert'],
     entry_points={
         'console_scripts': [
