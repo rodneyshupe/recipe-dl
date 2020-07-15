@@ -26,7 +26,7 @@ def parse_arguments(print_usage = False, detail = False):
     """ Creates a new argument parser. """
 
     parser = argparse.ArgumentParser('recipe-dl')
-    version = '%(prog)s ' + __version__
+    version = '%(prog)s v' + __version__
     parser.add_argument(
         '-v',
         '--version',
