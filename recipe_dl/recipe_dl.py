@@ -702,6 +702,8 @@ def generic2json(args, url):
         minutes_prep = iso8601.to_minutes(json_clean_value(source_json, 'prepTime'))
         if minutes_prep == 0 and minutes_total > 0 and minutes_cook > 0:
             minutes_prep = minutes_total - minutes_cook
+        if minutes_total == 0 and (minutes_prep > 0 or minutes_cook > 0):
+            minutes_total = minutes_prep + minutes_cook
         recipe_json['preptime'] = minutes2time(minutes_prep, '')
         recipe_json['cooktime'] = minutes2time(minutes_cook, '')
         recipe_json['totaltime'] = minutes2time(minutes_total)
