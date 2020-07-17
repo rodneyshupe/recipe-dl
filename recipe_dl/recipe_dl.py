@@ -848,6 +848,7 @@ def recipe_json2doc(args, recipe_json, format='rst', base_level=1):
         format_prefix = '*'
 
     print_debug(args, "Building " + format2text(format) + " from recipe JSON...")
+    print_debug(args, recipe_json)
 
     output = output_header(json_clean_value(recipe_json, 'title'), format)
 
