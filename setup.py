@@ -3,11 +3,11 @@
 
 """
 
-git tag -a v0.1.2 -m "v0.1.2"       # Set github tag
+git tag -a v0.2.0 -m "v0.2.0"       # Set github tag
 python setup.py clean --all         # Clean the previous build package
 python setup.py sdist bdist_wheel   # Create build package
 pip3 install .                      # Install from local package
-git push origin v0.1.2
+git push origin v0.2.0
 """
 
 import os
@@ -32,7 +32,7 @@ setup(
     ),
     #packages=['recipe_dl', 'recipe_dl.iso8601', 'recipe_dl.CustomPrint', 'recipe_dl.CustomExceptions'],
     install_requires=required(),
-    version = '0.1.2',
+    version = '0.2.0',
     license = "GNU General Public License v3.0",
     description = 'Recipe Downloader - Download Recipies from many websites and output as JSON, Markdown or reStructuredText.',
     long_description=read('README.md'),
