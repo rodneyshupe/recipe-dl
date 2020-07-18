@@ -3,11 +3,11 @@
 
 """
 
-git tag -a v0.2.0 -m "v0.2.0"       # Set github tag
+git tag -a v0.2.1 -m "v0.2.1"       # Set github tag
 python3 setup.py clean --all        # Clean the previous build package
 python3 setup.py sdist bdist_wheel  # Create build package
 pip3 install .                      # Install from local package
-git push origin v0.2.0
+git push origin v0.2.1
 """
 
 import os
