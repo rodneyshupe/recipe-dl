@@ -87,6 +87,10 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
+# Global Variables
+class custom_print_flags:
+    quiet = None
+    debug = None
 
 def breadcrumbs(limit = None):
     def function_name(stack_lines):
@@ -138,26 +142,67 @@ except ImportError: # *nix
         print(message, file=_file)
     del tty
 
-def print_info(args, msg):
-    if args is None or not args.quiet:
+def custom_print_init(quiet=None, debug=None):
+    """ Initialize the global variables """
+
+    if quiet is None and custom_print_flags.quiet is None:
+        custom_print_flags.quiet = True
+    else:
+        custom_print_flags.quiet = quiet
+
+    if debug is None and custom_print_flags.debug is None:
+        custom_print_flags.debug = False
+    else:
+        custom_print_flags.debug = debug
+
+def print_info(msg, quiet=None):
+    if custom_print_flags.quiet is None:
+        custom_print_init()
+
+    if quiet is None:
+        quiet = custom_print_flags.quiet
+
+    if not quiet:
         print_to_console (msg)
 
-def print_debug(args, msg):
-    if args is None or args.debug:
+def print_debug(msg, debug=None):
+    if custom_print_flags.debug is None:
+        custom_print_init()
+
+    if debug is None:
+        debug = custom_print_flags.debug
+
+    if debug:
         breadcrumb=breadcrumbs()
-        print_info(args, f'[{bcolors.DEBUG} DEBUG{breadcrumb} {bcolors.RESET}] {msg}')
+        print_info(f'[{bcolors.DEBUG} DEBUG{breadcrumb} {bcolors.RESET}] {msg}', quiet=False)
 
-def print_warning(args, msg):
-    if not args is None and not args.quiet:
+def print_warning(msg, quiet=None, debug=None):
+    if custom_print_flags.quiet is None or custom_print_flags.debug is None:
+        custom_print_init()
+
+    if quiet is None:
+        quite = custom_print_flags.quiet
+    if debug is None:
+        debug = custom_print_flags.debug
+
+    if not quiet:
         breadcrumb = ''
-        if args.debug:
+        if debug:
             breadcrumb=breadcrumbs()
-    print_info(args, f'[{bcolors.WARNING} WARNING{breadcrumb} {bcolors.RESET}] {msg}')
+    print_info(f'[{bcolors.WARNING} WARNING{breadcrumb} {bcolors.RESET}] {msg}', quiet=quiet)
 
-def print_error(args, msg):
+def print_error(msg, debug=None):
     breadcrumb = ''
-    if args is None or args.debug:
+
+    if custom_print_flags.debug is None:
+        custom_print_init()
+
+    if debug is None:
+        debug = custom_print_flags.debug
+
+    if debug:
         breadcrumb=breadcrumbs()
     else:
         breadcrumb=breadcrumbs(limit=1)
+
     print(f'[{bcolors.ERROR} ERROR{breadcrumb} {bcolors.RESET}] {msg}', file=sys.stderr)
