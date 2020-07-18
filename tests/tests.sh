@@ -59,6 +59,9 @@ if [ -z "${PROJECT_PATH}" ] ; then
   exit ${EX_IOERR}  # fail
 fi
 
+declare -r PYTHON_FILE="${PROJECT_PATH}/recipe_dl/recipe_dl.py"
+declare -r COMMAND="python3 \"${PYTHON_FILE}\""
+
 declare -r REFERENCE_FILE_PATH="${SCRIPT_PATH}/reference-files"
 declare -r DEFAULT_TESTS_FILE="$SCRIPT_PATH/recipe-dl.tests"
 declare -r DEFAULT_FAILURE_LOG_FILE="${SCRIPT_PATH}/test.failures.log"
@@ -294,7 +297,7 @@ function reset_references {
 
     local OPTION=$(option_from_file "${REFERENCE_FILE}")
     echo_info "  Resetting ${REFERENCE_FILE}"
-    ${PROJECT_PATH}/recipe-dl/recipe-dl.py ${OPTION} -q -s -o "${REFERENCE_FILE_PATH}/${REFERENCE_FILE}" "${URL}" > /dev/null 2>/dev/null
+    python3 ${PROJECT_PATH}/recipe_dl/recipe_dl.py ${OPTION} -q -s -o "${REFERENCE_FILE_PATH}/${REFERENCE_FILE}" "${URL}" > /dev/null 2>/dev/null
     unset URL REFERENCE_FILE OPTION
   done
   unset TEST
@@ -331,7 +334,7 @@ function run_test() {
   printf 'Test: %-'$PRINT_PARAM_WIDTH's ' "${PRINT_URL}"
 
   if [ -s "${REFERENCE_FILE_PATH}/${_REFERENCE_FILE}" ]; then
-    ${PROJECT_PATH}/recipe-dl/recipe-dl.py ${OPTION} -q -s -o "${TMP_OUTPUT_FILE}" "${_URL}" > /dev/null 2>/dev/null
+    python3 ${PROJECT_PATH}/recipe_dl/recipe_dl.py ${OPTION} -q -s -o "${TMP_OUTPUT_FILE}" "${_URL}" > /dev/null 2>/dev/null
 
     local TMP_OUTPUT_FILE_EXT="$(set -- $TMP_OUTPUT_FILE.*; echo "$1")"
     echo_debug "Compare File: \"$TMP_OUTPUT_FILE_EXT\""
@@ -348,7 +351,7 @@ function run_test() {
   else
     ((COUNT_SKIP++))
     echo "[${COLORS['missing']}MISSING${COLORS['normal']}]"
-    ${PROJECT_PATH}/recipe-dl/recipe-dl.py ${OPTION} -q -s -o "${REFERENCE_FILE_PATH}/${_REFERENCE_FILE}" "${_URL}" > /dev/null 2>/dev/null
+    python3 ${PROJECT_PATH}/recipe_dl/recipe_dl.py ${OPTION} -q -s -o "${REFERENCE_FILE_PATH}/${_REFERENCE_FILE}" "${_URL}" > /dev/null 2>/dev/null
   fi
 }
 

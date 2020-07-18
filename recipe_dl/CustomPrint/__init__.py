@@ -117,6 +117,8 @@ def breadcrumbs(limit = None):
         breadcrumb = ': ' + breadcrumb
     return breadcrumb
 
+
+# Print to concole function is different between windows and *nix systems
 try: # Windows
     from msvcrt import putwch
 
@@ -126,7 +128,7 @@ try: # Windows
         # newline
         putwch('\r')
         putwch('\n')
-except ImportError: # Unix
+except ImportError: # *nix
     import os
 
     fd = os.open('/dev/tty', os.O_WRONLY | os.O_NOCTTY)
