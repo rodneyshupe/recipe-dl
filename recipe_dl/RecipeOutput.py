@@ -5,8 +5,9 @@ import re
 import json
 import textwrap
 
-from CustomPrint import print_info, print_debug, print_error, print_warning, print_to_console
-from UtilityFunctions import url2domain, url2publisher, json_clean_value, strip_tags
+from CustomPrint import print_info, print_debug, print_error, print_warning
+
+from UtilityFunctions import url2domain, json_clean_value
 
 def recipe_output(args, recipe_json):
     """ Output recipe_json document """

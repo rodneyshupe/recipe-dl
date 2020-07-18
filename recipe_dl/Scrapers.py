@@ -2,15 +2,12 @@
 # -*- coding: utf-8 -*-
 
 import os
-#import sys
-
 import requests
 import re
 import json
 
-#sys.path.append(os.path.dirname(__file__))
 import iso8601
-from CustomPrint import print_info, print_debug, print_error, print_warning, print_to_console
+from CustomPrint import print_info, print_debug, print_to_console
 
 from CustomExceptions import Error, UrlError
 from UtilityFunctions import url2domain, url2publisher, json_clean_value, strip_tags

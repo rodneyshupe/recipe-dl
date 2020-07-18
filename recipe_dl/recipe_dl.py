@@ -147,6 +147,7 @@ def parse_arguments(print_usage = False, detail = False):
 def quick_tests(args):
     """ some quick tests """
 
+    from UtilityFunctions import url2domain
     url2domain("https://www.finecooking.com/recipe/herbed-grill-roasted-lamb")
 
     tests=[
