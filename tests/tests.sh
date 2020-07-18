@@ -60,7 +60,7 @@ if [ -z "${PROJECT_PATH}" ] ; then
 fi
 
 declare -r PYTHON_FILE="${PROJECT_PATH}/recipe_dl/recipe_dl.py"
-declare -r COMMAND="python3 \"${PYTHON_FILE}\""
+declare -r COMMAND="python3"
 
 declare -r REFERENCE_FILE_PATH="${SCRIPT_PATH}/reference-files"
 declare -r DEFAULT_TESTS_FILE="$SCRIPT_PATH/recipe-dl.tests"
@@ -297,7 +297,17 @@ function reset_references {
 
     local OPTION=$(option_from_file "${REFERENCE_FILE}")
     echo_info "  Resetting ${REFERENCE_FILE}"
-    python3 ${PROJECT_PATH}/recipe_dl/recipe_dl.py ${OPTION} -q -s -o "${REFERENCE_FILE_PATH}/${REFERENCE_FILE}" "${URL}" > /dev/null 2>/dev/null
+    $COMMAND "${PYTHON_FILE}" ${OPTION} -q -s -o "${REFERENCE_FILE_PATH}/${REFERENCE_FILE}" "${URL}" > /dev/null 2>/dev/null
+    ERR=$?
+    if [ $ERR -ne 0 ]; then
+      echo_error "ERROR: Exiting"
+      echo "  Options:        ${OPTION}"
+      echo "  URL:            ${_URL}"
+      echo "  Reference File: ${_REFERENCE_FILE}"
+      echo "  Error Details:"
+      $COMMAND "${PYTHON_FILE}" ${OPTION} -q -s -o "${TMP_OUTPUT_FILE}" "${_URL}" > /dev/null
+      exit $ERR
+    fi
     unset URL REFERENCE_FILE OPTION
   done
   unset TEST
@@ -334,24 +344,46 @@ function run_test() {
   printf 'Test: %-'$PRINT_PARAM_WIDTH's ' "${PRINT_URL}"
 
   if [ -s "${REFERENCE_FILE_PATH}/${_REFERENCE_FILE}" ]; then
-    python3 ${PROJECT_PATH}/recipe_dl/recipe_dl.py ${OPTION} -q -s -o "${TMP_OUTPUT_FILE}" "${_URL}" > /dev/null 2>/dev/null
+    $COMMAND "${PYTHON_FILE}" ${OPTION} -q -s -o "${TMP_OUTPUT_FILE}" "${_URL}" > /dev/null 2>/dev/null
+    ERR=$?
 
-    local TMP_OUTPUT_FILE_EXT="$(set -- $TMP_OUTPUT_FILE.*; echo "$1")"
-    echo_debug "Compare File: \"$TMP_OUTPUT_FILE_EXT\""
+    if [ $ERR -eq 0 ]; then
+      local TMP_OUTPUT_FILE_EXT="$(set -- $TMP_OUTPUT_FILE.*; echo "$1")"
+      echo_debug "Compare File: \"$TMP_OUTPUT_FILE_EXT\""
 
-    if diff --brief --ignore-trailing-space --ignore-blank-lines "${REFERENCE_FILE_PATH}/${_REFERENCE_FILE}" "${TMP_OUTPUT_FILE_EXT}" >/dev/null 2>&1 ; then
-      ((COUNT_PASS++))
-      echo "[${COLORS['pass']}PASS${COLORS['normal']}]"
+      if diff --brief --ignore-trailing-space --ignore-blank-lines "${REFERENCE_FILE_PATH}/${_REFERENCE_FILE}" "${TMP_OUTPUT_FILE_EXT}" >/dev/null 2>&1 ; then
+        ((COUNT_PASS++))
+        echo "[${COLORS['pass']}PASS${COLORS['normal']}]"
+      else
+        ((COUNT_FAIL++))
+        echo "[${COLORS['fail']}FAIL${COLORS['normal']}] see log"
+        log_failure "${OPTION}" "${_URL}" "${_REFERENCE_FILE}" "${TMP_OUTPUT_FILE_EXT}"
+      fi
+      rm "${TMP_OUTPUT_FILE_EXT}" 2>/dev/null
     else
-      ((COUNT_FAIL++))
-      echo "[${COLORS['fail']}FAIL${COLORS['normal']}] see log"
-      log_failure "${OPTION}" "${_URL}" "${_REFERENCE_FILE}" "${TMP_OUTPUT_FILE_EXT}"
+      echo "[${COLORS['fail']}ERROR${COLORS['normal']}]"
+      echo_error "ERROR: Exiting"
+      echo "  Options:        ${OPTION}"
+      echo "  URL:            ${_URL}"
+      echo "  Reference File: ${_REFERENCE_FILE}"
+      echo "  Error Details:"
+      $COMMAND "${PYTHON_FILE}" ${OPTION} -q -s -o "${TMP_OUTPUT_FILE}" "${_URL}" > /dev/null
+      exit $ERR
     fi
-    rm "${TMP_OUTPUT_FILE_EXT}" 2>/dev/null
   else
     ((COUNT_SKIP++))
     echo "[${COLORS['missing']}MISSING${COLORS['normal']}]"
-    python3 ${PROJECT_PATH}/recipe_dl/recipe_dl.py ${OPTION} -q -s -o "${REFERENCE_FILE_PATH}/${_REFERENCE_FILE}" "${_URL}" > /dev/null 2>/dev/null
+    $COMMAND "${PYTHON_FILE}" ${OPTION} -q -s -o "${REFERENCE_FILE_PATH}/${_REFERENCE_FILE}" "${_URL}" > /dev/null 2>/dev/null
+    ERR=$?
+    if [ $ERR -ne 0 ]; then
+      echo_error "ERROR: Exiting"
+      echo "  Options:        ${OPTION}"
+      echo "  URL:            ${_URL}"
+      echo "  Reference File: ${_REFERENCE_FILE}"
+      echo "  Error Details:"
+      $COMMAND "${PYTHON_FILE}" ${OPTION} -q -s -o "${TMP_OUTPUT_FILE}" "${_URL}" > /dev/null
+      exit $ERR
+    fi
   fi
 }
 
