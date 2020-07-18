@@ -110,11 +110,17 @@ def url2recipe_json(args, url):
             def load_cookies(url):
                 """ Loads Cookie jar """
                 print_debug (args, 'Loading cookies...')
+
                 filename = cookie_filename(url)
+                if not os.path.isfile(filename):
+                    print_debug (args, "Unable to find " + filename + " adjusting.")
+                    filename = os.path.dirname(os.path.abspath(__file__)) + "/" + filename
+
                 if os.path.isfile(filename):
                     with open(filename, 'rb') as f:
                         return pickle.load(f)
                 else:
+                    print_debug (args, "Unable to find " + filename)
                     return None
 
             def get_credentials():
