@@ -7,7 +7,7 @@ import re
 import json
 
 import iso8601
-from CustomPrint import print_info, print_debug, print_to_console
+from CustomPrint import custom_print_init, print_info, print_debug, print_to_console
 
 from CustomExceptions import Error, UrlError
 from UtilityFunctions import url2domain, url2publisher, json_clean_value, strip_tags
@@ -99,25 +99,25 @@ def url2recipe_json(args, url):
 
             def save_cookies(requests_cookiejar, url):
                 """ save cookie jar """
-                print_debug (args, 'Saving cookies...')
+                print_debug ('Saving cookies...')
                 filename = cookie_filename(url)
                 with open(filename, 'wb') as f:
                     pickle.dump(requests_cookiejar, f)
 
             def load_cookies(url):
                 """ Loads Cookie jar """
-                print_debug (args, 'Loading cookies...')
+                print_debug ('Loading cookies...')
 
                 filename = cookie_filename(url)
                 if not os.path.isfile(filename):
-                    print_debug (args, "Unable to find " + filename + " adjusting.")
+                    print_debug ("Unable to find " + filename + " adjusting.")
                     filename = os.path.dirname(os.path.abspath(__file__)) + "/" + filename
 
                 if os.path.isfile(filename):
                     with open(filename, 'rb') as f:
                         return pickle.load(f)
                 else:
-                    print_debug (args, "Unable to find " + filename)
+                    print_debug ("Unable to find " + filename)
                     return None
 
             def get_credentials():
@@ -140,7 +140,7 @@ def url2recipe_json(args, url):
             def get_page_using_cookie(args, url, cookies = None):
                 """ Load page using existing cookies """
 
-                print_debug (args, "Getting page using cookies...")
+                print_debug ("Getting page using cookies...")
 
                 recipe_page = None
 
@@ -149,14 +149,14 @@ def url2recipe_json(args, url):
                     cookies = load_cookies(url)
 
                 if not cookies is None:
-                    print_debug (args, 'cookies = ' + str(requests.utils.dict_from_cookiejar(cookies)))
+                    print_debug ('cookies = ' + str(requests.utils.dict_from_cookiejar(cookies)))
                     recipe_page = requests.get(url, cookies=cookies).text
 
                 return recipe_page
 
             def get_page_using_session(args, url):
 
-                print_debug (args, "Getting page using sessions...")
+                print_debug ("Getting page using sessions...")
 
                 auth_json = get_credentials()
 
@@ -205,7 +205,7 @@ def url2recipe_json(args, url):
 
             return raw_json
 
-        print_debug(args, "Using Cook's Illustrated scraper...")
+        print_debug("Using Cook's Illustrated scraper...")
         recipe_json={}
         recipe_json['url'] = url
 
@@ -264,7 +264,7 @@ def url2recipe_json(args, url):
     def saveur2json(args, url):
         """ Loads Saveur URL and builds recipe JSON """
 
-        print_debug(args, "Using Saveur scraper...")
+        print_debug("Using Saveur scraper...")
         recipe_json={}
         recipe_json['url'] = url
 
@@ -328,10 +328,10 @@ def url2recipe_json(args, url):
                             raw_json_text = re.sub('"password":{"regExp":.*,"messages"', '"password":{"regExp":""},"messages"', raw_json_text)
                             raw_json = json.loads(raw_json_text)
                             return_value = json_clean_value(raw_json, 'content', json.loads('{}'))
-                            #print_debug(args, json.dumps(return_value, indent=4))
+                            #print_debug(json.dumps(return_value, indent=4))
             return return_value
 
-        print_debug(args, "Using Epicurious scraper...")
+        print_debug("Using Epicurious scraper...")
         recipe_json={}
         recipe_json['url'] = url
 
@@ -400,7 +400,7 @@ def url2recipe_json(args, url):
     def recipe_scraper2json(args, url):
         from recipe_scrapers import scrape_me
 
-        print_debug(args, "Using recipe-scraper module...")
+        print_debug("Using recipe-scraper module...")
 
         recipe_json={}
         recipe_json['url'] = url
@@ -478,13 +478,13 @@ def url2recipe_json(args, url):
                         return_value = None
             return return_value
 
-        print_debug(args, "Using generic scraper...")
+        print_debug("Using generic scraper...")
         recipe_json={}
         recipe_json['url'] = url
         source_json = get_json(url)
 
         if source_json is None:
-            print_info(args, "No application+ld json attempting to use recipe-scrapers...")
+            print_info("No application+ld json attempting to use recipe-scrapers...")
             recipe_json = recipe_scraper2json(args, url)
         else:
             recipe_json['title'] = json_clean_value(source_json, 'headline', json_clean_value(source_json, 'name'))
@@ -531,7 +531,7 @@ def url2recipe_json(args, url):
                 out_ingredients.append(strip_tags(ingredient))
             recipe_json['ingredient_groups'][0]['ingredients'] = out_ingredients
 
-            print_debug(args, json.dumps(source_json))
+            print_debug(json.dumps(source_json))
             # Directions
             out_instruction=[]
             instructions=list(json_find_key(source_json, 'recipeInstructions'))[0]
@@ -547,11 +547,13 @@ def url2recipe_json(args, url):
 
         return recipe_json
 
-    print_info (args, "Processsing %s..." % (url))
+    custom_print_init (quiet=args.quiet, debug=args.debug)
+
+    print_info ("Processsing %s..." % (url))
 
     # Branch based on domain
     domain = url2domain(url)
-    print_debug (args, "Branching based on domain (%s)..." % domain)
+    print_debug ("Branching based on domain (%s)..." % domain)
     if domain in [ 'www.americatestkitchen.com','www.cookscountry.com','www.cooksillustrated.com' ]:
         recipe_json = ci2json(args, url)
     elif domain == 'www.epicurious.com':

@@ -6,7 +6,7 @@ sys.path.append(os.path.dirname(__file__))
 
 import argparse
 
-from CustomPrint import print_info, print_debug, print_error, print_warning, print_to_console
+from CustomPrint import custom_print_init, print_info, print_debug, print_error, print_warning
 
 from Scrapers import url2recipe_json
 from RecipeOutput import recipe_output
@@ -20,7 +20,6 @@ def parse_arguments(print_usage = False, detail = False):
     parser = argparse.ArgumentParser('recipe-dl')
     version = '%(prog)s v' + __version__
     parser.add_argument(
-        '-v',
         '--version',
         action='version',
         version=version
@@ -46,8 +45,16 @@ def parse_arguments(print_usage = False, detail = False):
         "--quiet",
         action="store_true",
         dest="quiet",
-        default=False,
+        default=None,
         help="Suppress most output aka Silent Mode.",
+    )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        dest="verbose",
+        default=False,
+        help="Make output verbose",
     )
     parser.add_argument(
         "-j",
@@ -120,9 +127,14 @@ def parse_arguments(print_usage = False, detail = False):
     else:
         args = parser.parse_args()
 
+        if args.quiet is None:
+            args.quiet = not args.verbose
+
         if args.debug and args.quiet:
             args.quiet = False
-            print_warning (args, "Debug option selected. Can not run in \"Silent Mode\"")
+            print_warning ("Debug option selected. Can not run in \"Silent Mode\"")
+
+        custom_print_init (quiet=args.quiet, debug=args.debug)
 
         filetype_count = 0
         if args.output_json:
@@ -132,11 +144,11 @@ def parse_arguments(print_usage = False, detail = False):
         if args.output_rst:
             filetype_count += 1
 
-        print_debug(args, "filetype_count=%s" % filetype_count)
+        print_debug("filetype_count=%s" % filetype_count)
         if filetype_count == 0:
             args.output_rst = True
         elif filetype_count > 1:
-            print_warning (args, "More than one output file type select. Assuming 'Save to File'")
+            print_warning ("More than one output file type select. Assuming 'Save to File'")
             args.save_to_file = True
 
         if not args.save_to_file and not args.outfile is None and args.outfile != '':
@@ -157,15 +169,17 @@ def quick_tests(args):
         'https://www.thechunkychef.com/easy-slow-cooker-mongolian-beef-recipe'
     ]
     for test_url in tests:
-        print_info (args, "==========================")
+        custom_print_init (quiet=args.quiet, debug=args.debug)
+
+        print_info ("==========================")
         recipe_output(args, url2recipe_json(args, test_url))
-        print_info (args, "==========================")
+        print_info ("==========================")
 
 def main(args=None):
     if args is None:
         args = parse_arguments()
 
-    print_debug (args, args)
+    print_debug (args)
     if args.quick_tests:
         quick_tests(args)
     else:
@@ -175,12 +189,12 @@ def main(args=None):
                 recipe_output(args, recipe_json)
         else:
             if not args.infile is None and args.infile != "":
-                print_info (args, "Processsing %s..." % args.infile)
+                print_info ("Processsing %s..." % args.infile)
                 with open(args.infile) as json_file:
                     recipe_json = json.load(json_file)
                     recipe_output(args, recipe_json)
             else:
-                print_error (args,"You must specify an input URL or input JSON file.\n")
+                print_error ("You must specify an input URL or input JSON file.\n")
                 parse_arguments(print_usage=True)
 
 if __name__ == '__main__':

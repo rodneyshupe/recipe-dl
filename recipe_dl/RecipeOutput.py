@@ -5,7 +5,7 @@ import re
 import json
 import textwrap
 
-from CustomPrint import print_info, print_debug, print_error, print_warning
+from CustomPrint import custom_print_init, print_info, print_debug, print_error, print_warning
 
 from UtilityFunctions import url2domain, json_clean_value
 
@@ -30,7 +30,7 @@ def recipe_output(args, recipe_json):
                     format_text = 'reStructuredText'
                 else:
                     format_text = "Unknown format [%s]" % (format)
-                    print_warning(None, "Unknown format [%s]" % (format))
+                    print_warning("Unknown format [%s]" % (format))
                     #raise ("ERROR: Unknown format [%s]" % (format))
                 return format_text
 
@@ -85,8 +85,8 @@ def recipe_output(args, recipe_json):
             if format == 'md':
                 format_prefix = '*'
 
-            print_debug(args, "Building " + format2text(format) + " from recipe JSON...")
-            print_debug(args, recipe_json)
+            print_debug("Building " + format2text(format) + " from recipe JSON...")
+            print_debug(recipe_json)
 
             output = output_header(json_clean_value(recipe_json, 'title'), format)
 
@@ -181,18 +181,18 @@ def recipe_output(args, recipe_json):
         elif format == 'rst':
             output = recipe_json2doc(args, recipe_json, format='rst')
         else:
-            print_error(args, "Unknown format [%s]" % (format))
+            print_error("Unknown format [%s]" % (format))
             raise ("ERROR: Unknown format [%s]" % (format))
 
         if output is None or output.strip() == "":
-            print_error(args,"Problem output is empty")
+            print_error("Problem output is empty")
         else:
             if args.save_to_file:
                 if args.outfile is None or args.outfile == "":
                     savefile = output_filename(re.sub(r'\W+', '', title), format)
                 else:
                     savefile = output_filename(args.outfile, format)
-                print_info(args, "Writing output to %s..." % savefile)
+                print_info("Writing output to %s..." % savefile)
                 text_file = open(savefile, "w")
                 ret_value = text_file.write(output)
                 text_file.close()
@@ -201,9 +201,11 @@ def recipe_output(args, recipe_json):
 
         return ret_value
 
+    custom_print_init (quiet=args.quiet, debug=args.debug)
+
     title = json_clean_value(recipe_json, "title")
     if title != "":
-        print_info (args, "   Processing complete: %s" % (title))
+        print_info ("   Processing complete: %s" % (title))
         if args.output_json:
             recipe_output_file (args, recipe_json, "json")
         if args.output_md:
@@ -211,4 +213,4 @@ def recipe_output(args, recipe_json):
         if args.output_rst:
             recipe_output_file (args, recipe_json, "rst")
     else:
-        print_warning (args, "Unable to retrieve title from json")
+        print_warning ("Unable to retrieve title from json")
