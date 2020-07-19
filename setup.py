@@ -21,8 +21,8 @@ setup(
         include=['recipe_dl', 'recipe_dl.*'],
         exclude=['*.rst', '*.txt', '*.md']
     ),
-    #packages=['recipe_dl', 'recipe_dl.iso8601', 'recipe_dl.CustomPrint', 'recipe_dl.CustomExceptions'],
     install_requires=required(),
+    dependency_links=['http://github.com/rodneyshupe/CustomPrint/tarball/master#egg=CustomPrint-0.0.3'],
     version = '0.2.1',
     license = "GNU General Public License v3.0",
     description = 'Recipe Downloader - Download Recipies from many websites and output as JSON, Markdown or reStructuredText.',
