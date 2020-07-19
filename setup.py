@@ -16,7 +16,7 @@ def required():
         return_value = f.read().splitlines()
 
     return_value.append("CustomPrint @ git+ssh://git@github.com/rodneyshupe/CustomPrint@v1.0.0#egg=CustomPrint")
-    return_value.append("iso8601 @ git+ssh://git@github.com/rodneyshupe/iso8601@v0.0.1#egg=iso8601")
+    return_value.append("iso8601 @ git+ssh://git@github.com/rodneyshupe/iso8601@v1.0.0#egg=iso8601")
 
     return return_value
 
