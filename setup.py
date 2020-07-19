@@ -15,7 +15,8 @@ def required():
     with open('requirements.txt') as f:
         return_value = f.read().splitlines()
 
-    return_value.append("CustomPrint @ git+ssh://git@github.com/rodneyshupe/CustomPrint@v0.0.3#egg=CustomPrint")
+    return_value.append("CustomPrint @ git+ssh://git@github.com/rodneyshupe/CustomPrint@v1.0.0#egg=CustomPrint")
+    return_value.append("iso8601 @ git+ssh://git@github.com/rodneyshupe/iso8601@v0.0.1#egg=iso8601")
 
     return return_value
 
@@ -26,7 +27,7 @@ setup(
         exclude=['*.rst', '*.txt', '*.md']
     ),
     install_requires=required(),
-    dependency_links=['http://github.com/rodneyshupe/CustomPrint/tarball/master#egg=CustomPrint-0.0.3'],
+    #dependency_links=['http://github.com/rodneyshupe/CustomPrint/tarball/master#egg=CustomPrint-0.0.3'],
     version = '0.2.2',
     license = "GNU General Public License v3.0",
     description = 'Recipe Downloader - Download Recipies from many websites and output as JSON, Markdown or reStructuredText.',
