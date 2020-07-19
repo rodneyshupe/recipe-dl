@@ -23,7 +23,7 @@ setup(
     ),
     install_requires=required(),
     dependency_links=['http://github.com/rodneyshupe/CustomPrint/tarball/master#egg=CustomPrint-0.0.3'],
-    version = '0.2.1',
+    version = '0.2.2',
     license = "GNU General Public License v3.0",
     description = 'Recipe Downloader - Download Recipies from many websites and output as JSON, Markdown or reStructuredText.',
     long_description=read('README.md'),
