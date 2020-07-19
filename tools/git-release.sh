@@ -38,4 +38,4 @@ EOF
 }
 
 echo "Create release $version for repo: $repo_full_name branch: $branch"
-curl --data "$(generate_post_data)" repo_url
+curl --data "$(generate_post_data)" $repo_url
