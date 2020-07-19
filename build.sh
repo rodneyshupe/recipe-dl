@@ -20,7 +20,7 @@ read -p "Enter new version: " NEW_VERSION
 
 echo "Update version in source files from ${LATEST_VERSION} to ${NEW_VERSION}."
 proceed
-sed -i "s/\/recipe-dl\/archive\/v${LATEST_VERSION}/\/recipe-dl\/archive\/v${NEW_VERSION}/g" README.md
+sed -i "s/\/archive\/${LATEST_TAG}/\/archive\/${LATEST_TAG}/g" README.md
 sed -i "s/version = '${LATEST_VERSION}'/version = '${NEW_VERSION}'/g" setup.py
 sed -i "s/__version__ = '${LATEST_VERSION}'/__version__ = '${NEW_VERSION}'/g" recipe_dl/recipe_dl.py
 
@@ -50,6 +50,6 @@ git tag -a $NEW_TAG -m "$NEW_TAG"   # Set github tag
 python3 setup.py clean --all        # Clean the previous build package
 python3 setup.py sdist bdist_wheel  # Create build package
 
-echo "Push release." 
+echo "Push release."
 proceed
 git push origin $NEW_TAG
