@@ -7,7 +7,7 @@ default output format.
 ## Usage
 
 ```
-usage: recipe-dl [-h] [-v] [-a] [-d] [-q] [-j] [-m] [-r] [-i INFILE]
+usage: recipe-dl [-h] [-v] [-a] [-d] [-j] [-m] [-r] [-i INFILE]
                  [-o OUTFILE] [-s]
                  [URL [URL ...]]
 
@@ -16,10 +16,10 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-  -v, --version         show program's version number and exit
+  --version             show program's version number and exit
   -a, --authorize       Force authorization of Cook Illustrated sites
   -d, --debug           Add additional Output
-  -q, --quiet           Suppress most output aka Silent Mode.
+  -v, --verbose         Make output verbose
   -j, --output-json     Output results in JSON format.
   -m, --output-md       Output results in Markdown format.
   -r, --output-rst      Output results in reStructuredText format.

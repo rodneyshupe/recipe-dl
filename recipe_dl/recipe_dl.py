@@ -46,7 +46,8 @@ def parse_arguments(print_usage = False, detail = False):
         action="store_true",
         dest="quiet",
         default=None,
-        help="Suppress most output aka Silent Mode.",
+        #help="Suppress most output aka Silent Mode.",
+        help=argparse.SUPPRESS
     )
     parser.add_argument(
         "-v",
@@ -114,6 +115,7 @@ def parse_arguments(print_usage = False, detail = False):
         "--quick-tests",
         action="store_true",
         dest="quick_tests",
+        help=argparse.SUPPRESS,
         default=False
     )
 
@@ -199,7 +201,6 @@ def main(args=None):
 
 if __name__ == '__main__':
     args = parse_arguments()
-    #print_debug (json.dumps(saveur2json(args, 'https://www.epicurious.com/recipes/food/views/instant-pot-macaroni-and-cheese'), indent=4))
     main(args)
 
 #quick_tests()
