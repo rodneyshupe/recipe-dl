@@ -20,7 +20,7 @@ function beginswith() {
   esac;
 }
 
-ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" > /dev/null && pwd )"
+ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" > /dev/null && cd .. > /dev/null && pwd )"
 
 LATEST_TAG=$(git tag -l | tail -1)
 if [ "${LATEST_TAG}" == "" ]; then
