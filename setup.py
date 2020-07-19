@@ -13,7 +13,11 @@ def read(fname):
 
 def required():
     with open('requirements.txt') as f:
-        return f.read().splitlines()
+        return_value = f.read().splitlines()
+
+    return_value.append("CustomPrint @ git+ssh://git@github.com/rodneyshupe/CustomPrint@v0.0.3#egg=CustomPrint")
+
+    return return_value
 
 setup(
     name = 'recipe-dl',
