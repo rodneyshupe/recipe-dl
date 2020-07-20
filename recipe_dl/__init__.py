@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import recipe_dl
+import main
 
 def main():
     """Entry point for the application script"""
-    recipe_dl.main
+    main.main
