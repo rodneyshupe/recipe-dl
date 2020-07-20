@@ -11,7 +11,7 @@ from CustomPrint import custom_print_init, print_info, print_debug, print_error,
 from Scrapers import url2recipe_json
 from RecipeOutput import recipe_output
 
-__version__ = '0.2.3'
+__version__ = '0.2.4'
 __author__ = u'Rodney Shupe'
 
 def parse_arguments(print_usage = False, detail = False):
