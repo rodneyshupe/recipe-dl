@@ -127,16 +127,19 @@ def url2recipe_json(args, url):
                 filename = cookie_filename(url)
                 # First look in current directory
                 if not os.path.isfile(filename):
-                    print_debug ("Unable to find " + filename + " adjusting.")
+                    print_debug ("Unable to find " + filename + ' locally.')
                     # Next look in ~/.config/recipe-dl
                     path = os.path.expanduser('~') + "/.config/recipe-dl"
+                    print_debug ("Searching " + path)
                     if os.path.isfile(path + '/' + filename):
                         filename = path + '/' + filename
                     else:
                         # Lastly look where the script is located.
+                        print_debug ("Not found. Using script location.")
                         filename = os.path.dirname(os.path.abspath(__file__)) + "/" + filename
 
                 if os.path.isfile(filename):
+                    print_debug("found.")
                     with open(filename, 'rb') as f:
                         return pickle.load(f)
                 else:
