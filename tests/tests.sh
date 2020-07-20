@@ -59,7 +59,7 @@ if [ -z "${PROJECT_PATH}" ] ; then
   exit ${EX_IOERR}  # fail
 fi
 
-declare -r PYTHON_FILE="${PROJECT_PATH}/recipe_dl/recipe_dl.py"
+declare -r PYTHON_FILE="${PROJECT_PATH}/recipe_dl/main.py"
 declare -r COMMAND="python3"
 
 declare -r REFERENCE_FILE_PATH="${SCRIPT_PATH}/reference-files"
