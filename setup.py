@@ -39,7 +39,7 @@ setup(
     keywords = ['recipe', 'download', 'json', 'markdown', 'md', 'restructuredtext', 'rst', 'convert'],
     entry_points={
         'console_scripts': [
-            'recipe-dl=recipe_dl.recipe_dl:main'
+            'recipe-dl=recipe_dl.main:main'
         ]
     },
     classifiers = [
