@@ -99,8 +99,24 @@ def url2recipe_json(args, url):
 
             def save_cookies(requests_cookiejar, url):
                 """ save cookie jar """
-                print_debug ('Saving cookies...')
                 filename = cookie_filename(url)
+                # Check if ~/.config/recipe-dl exists
+                path = os.path.expanduser('~') + "/.config/recipe-dl"
+                filename = path + '/' + filename
+                if not os.path.isdir(path):
+                    # If not check for ~/.config and create recipe-dl
+                    if os.path.isdir(os.path.expanduser('~') + "/.config"):
+                        try:
+                            os.makedirs(path)
+                        except OSError:
+                            if not os.path.isdir(path):
+                                raise
+                    else:
+                        path = os.path.expanduser('.')
+                        if os.path.isdir(path):
+                            filename = path + '/' + filename
+
+                print_debug ('Saving cookies to ' + path )
                 with open(filename, 'wb') as f:
                     pickle.dump(requests_cookiejar, f)
 
@@ -109,9 +125,16 @@ def url2recipe_json(args, url):
                 print_debug ('Loading cookies...')
 
                 filename = cookie_filename(url)
+                # First look in current directory
                 if not os.path.isfile(filename):
                     print_debug ("Unable to find " + filename + " adjusting.")
-                    filename = os.path.dirname(os.path.abspath(__file__)) + "/" + filename
+                    # Next look in ~/.config/recipe-dl
+                    path = os.path.expanduser('~') + "/.config/recipe-dl"
+                    if os.path.isfile(path + '/' + filename):
+                        filename = path + '/' + filename
+                    else:
+                        # Lastly look where the script is located.
+                        filename = os.path.dirname(os.path.abspath(__file__)) + "/" + filename
 
                 if os.path.isfile(filename):
                     with open(filename, 'rb') as f:
