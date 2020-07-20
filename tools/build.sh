@@ -55,8 +55,8 @@ echo
 echo "Step 4: Push changes to repository."
 proceed
 git add $ROOT_DIR
-git commit -m "Updating to ${NEW_VERSION}"
-git push
+git commit -m "Updating to ${NEW_VERSION}" || echo "WARNING: git commit fail."
+git push || echo "WARNING: git push fail."
 
 echo
 echo "Step 5: Test build."
