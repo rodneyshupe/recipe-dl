@@ -44,7 +44,7 @@ Currently this has been tested for the following sites:
 ## Install
 Install using pip
 ```sh
-pip3 install https://github.com/rodneyshupe/recipe-dl/archive/v0.2.5.tar.gz
+pip3 install https://github.com/rodneyshupe/recipe-dl/archive/v0.2.4.tar.gz
 ```
 <!--
 Copy recipe-dl.sh to /opt.
