@@ -41,12 +41,16 @@ def url2publisher(url):
 def json_clean_value(json_obj, key, default=''):
     """ Searches for key in JSON and returns value """
 
+    return_value = default
+
     if key in json_obj:
-        return_value=json_obj[key]
+        if json_obj[key] == None:
+            return_value = ''
+        else:
+            return_value = json_obj[key]
         if type(return_value) == str:
             return_value = strip_tags(return_value.strip())
-    else:
-        return_value=default
+
     return return_value
 
 def strip_tags(str, strip_newline = False):
