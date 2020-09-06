@@ -460,10 +460,13 @@ def url2recipe_json(args, url):
             """ Find and load "standardized" json document containing recipe """
 
             return_value = None
-            page = requests.get(url)
+
+            user_agent = {'User-agent': 'Mozilla/5.0'}
+            page = requests.get(url, headers = user_agent)
 
             match = re.search(r'<script[^>]*type=.?application/ld\+json.?[^>]*>', page.text)
             if match:
+                print_debug("Found an occurance of 'application/ld+json'")
                 soup = BeautifulSoup(page.text, 'html5lib')
                 scripts = soup.findAll('script', attrs = {'type':'application/ld+json'})
                 for script in scripts:
