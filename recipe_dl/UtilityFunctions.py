@@ -48,8 +48,8 @@ def json_clean_value(json_obj, key, default=''):
             return_value = ''
         else:
             return_value = json_obj[key]
-        if type(return_value) == str:
-            return_value = strip_tags(return_value.strip())
+            if type(return_value) == str:
+                return_value = strip_tags(return_value.strip())
 
     return return_value
 
