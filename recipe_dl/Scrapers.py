@@ -516,6 +516,8 @@ def url2recipe_json(args, url):
             print_info("No application+ld json attempting to use recipe-scrapers...")
             recipe_json = recipe_scraper2json(args, url)
         else:
+            print_debug(json.dumps(source_json))
+
             recipe_json['title'] = json_clean_value(source_json, 'headline', json_clean_value(source_json, 'name'))
             recipe_json['description'] = json_clean_value(source_json, 'description')
             if 'recipeYield' in source_json and type(source_json['recipeYield']) == list:
@@ -560,16 +562,19 @@ def url2recipe_json(args, url):
                 out_ingredients.append(strip_tags(ingredient))
             recipe_json['ingredient_groups'][0]['ingredients'] = out_ingredients
 
-            print_debug(json.dumps(source_json))
             # Directions
             out_instruction=[]
             instructions=list(json_find_key(source_json, 'recipeInstructions'))[0]
-            for instruction in instructions:
-                try:
-                    instruction_json = instruction
-                    out_instruction.append(strip_tags(instruction_json['text']))
-                except:
-                    out_instruction.append(strip_tags(str(instruction)))
+            if str(instructions)[0] == '[':
+                for instruction in instructions:
+                    try:
+                        instruction_json = instruction
+                        out_instruction.append(strip_tags(instruction_json['text']))
+                    except:
+                        out_instruction.append(strip_tags(str(instruction)))
+            else:
+                out_instruction.append(strip_tags(str(instructions)))
+
             recipe_json['direction_groups'] = []
             recipe_json['direction_groups'].append(json.loads('{"group":"","directions":[]}'))
             recipe_json['direction_groups'][0]['directions'] = out_instruction
