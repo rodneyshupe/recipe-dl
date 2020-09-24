@@ -54,9 +54,8 @@ def recipe_output(args, recipe_json):
                 """ returns string containg formated groups/lists """
 
                 out_string = ''
-                group_index = 0
                 group_count = len(json_clean_value(recipe_json, group_key))
-                for group in json_clean_value(recipe_json, group_key):
+                for group_index, group in enumerate(json_clean_value(recipe_json, group_key)):
                     group_title = json_clean_value(group, 'title')
 
                     if group_title != '':
@@ -64,9 +63,7 @@ def recipe_output(args, recipe_json):
                             out_string += '\n'
                         out_string += output_header(group_title, format=format, level=(base_level+1))
 
-                    item_count = 0
-                    for item in json_clean_value(group, item_key):
-                        item_count += 1
+                    for item_count, item in enumerate(json_clean_value(group, item_key), 1):
                         if item_prefix == '#':
                             prefix = str(item_count).strip() + '. '
                         else:
@@ -77,7 +74,6 @@ def recipe_output(args, recipe_json):
                                 out_string += line + '\n'
                         else:
                             out_string += prefix.strip() + ' ' + str(item) + '\n'
-                    group_index += 1
 
                 return out_string
 
