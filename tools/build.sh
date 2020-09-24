@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-trap 'rc=$?; echo "ERR at line ${LINENO} (rc: $rc)"; exit $rc' ERR
+#trap 'rc=$?; echo "ERR at line ${LINENO} (rc: $rc)"; exit $rc' ERR
 #trap 'rc=$?; echo "EXIT (rc: $rc)"; exit $rc' EXIT
 set -u
 
