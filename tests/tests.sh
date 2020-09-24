@@ -362,13 +362,13 @@ function run_test() {
       rm "${TMP_OUTPUT_FILE_EXT}" 2>/dev/null
     else
       echo "[${COLORS['fail']}ERROR${COLORS['normal']}]"
-      echo_error "ERROR: Exiting"
-      echo "  Options:        ${OPTION}"
-      echo "  URL:            ${_URL}"
-      echo "  Reference File: ${_REFERENCE_FILE}"
-      echo "  Error Details:"
-      $COMMAND "${PYTHON_FILE}" ${OPTION} -q -s -o "${TMP_OUTPUT_FILE}" "${_URL}" > /dev/null
-      exit $ERR
+      echo "ERROR: Exiting ($ERR)" >>"${FAILURE_LOG_FILE}"
+      echo "  Options:        ${OPTION}" >>"${FAILURE_LOG_FILE}"
+      echo "  URL:            ${_URL}" >>"${FAILURE_LOG_FILE}"
+      echo "  Reference File: ${_REFERENCE_FILE}" >>"${FAILURE_LOG_FILE}"
+      echo "  Error Details:" >>"${FAILURE_LOG_FILE}"
+      $COMMAND "${PYTHON_FILE}" ${OPTION} -q -s -o "${TMP_OUTPUT_FILE}" "${_URL}" > /dev/null 2>>"${FAILURE_LOG_FILE}"
+      #exit $ERR
     fi
   else
     ((COUNT_SKIP++))
