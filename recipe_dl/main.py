@@ -165,7 +165,7 @@ def quick_tests(args):
     url2domain("https://www.finecooking.com/recipe/herbed-grill-roasted-lamb")
 
     tests=[
-        'https://www.finecooking.com/recipe/herbed-grill-roasted-lamb',
+        'http://www.foodandwine.com/recipes/herbed-roast-leg-of-lamb',
         'https://www.bonappetit.com/recipe/instant-pot-glazed-and-grilled-ribs',
         'https://www.saveur.com/perfect-brown-rice-recipe/',
         'https://www.thechunkychef.com/easy-slow-cooker-mongolian-beef-recipe'
