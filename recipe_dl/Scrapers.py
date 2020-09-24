@@ -238,6 +238,7 @@ def url2recipe_json(args, url):
         source_json = get_json(args, url)
 
         if not source_json is None:
+            print_debug(str(source_json))
             recipe_json['title'] = json_clean_value(source_json, 'title')
             recipe_json['description'] = strip_tags(json_clean_value(source_json['metaData']['fields'], 'description'), strip_newline = True)
             recipe_json['yield'] = json_clean_value(source_json, 'yields')
@@ -564,8 +565,14 @@ def url2recipe_json(args, url):
 
             # Directions
             out_instruction=[]
-            instructions=list(json_find_key(source_json, 'recipeInstructions'))[0]
+            instructionsSection=list(json_find_key(source_json, 'recipeInstructions'))[0]
+            try:
+                instructions=list(json_find_key(source_json, 'itemListElement'))[0]
+            except IndexError:
+                instructions=instructionsSection
+            print_debug(str(instructions))
             if str(instructions)[0] == '[':
+
                 for instruction in instructions:
                     try:
                         instruction_json = instruction
