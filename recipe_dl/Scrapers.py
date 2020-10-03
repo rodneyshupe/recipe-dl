@@ -492,15 +492,19 @@ def url2recipe_json(args, url):
                             if not return_value is None:
                                 return_value['publisher']=url2publisher(url)
                     else:
-                        if 'recipeIngredient' in raw_json:
-                            return_value = raw_json
+                        if return_value is None:
                             try:
-                                return_value['publisher'] = json_clean_value(json_clean_value(source_json, 'publisher', json.loads('{}')), 'name', url2publisher(url))
+                                if raw_json['@type'] == 'Recipe' and 'recipeIngredient' in raw_json:
+                                    return_value = raw_json
+                                else:
+                                    return_value = None
                             except:
-                                if not return_value is None:
-                                    return_value['publisher']=url2publisher(url)
-                        else:
-                            return_value = None
+                                return_value = None
+                        try:
+                            return_value['publisher'] = json_clean_value(json_clean_value(source_json, 'publisher', json.loads('{}')), 'name', url2publisher(url))
+                        except:
+                            if not return_value is None:
+                                return_value['publisher']=url2publisher(url)
 
                     if (not return_value is None) and ('recipeIngredient' in return_value):
                         pass
