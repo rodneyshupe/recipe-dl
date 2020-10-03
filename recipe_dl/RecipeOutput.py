@@ -97,7 +97,7 @@ def recipe_output(args, recipe_json):
             if totaltime != '':
                 info += 'Total: ' + totaltime + ' | '
             if recipe_yield != '':
-                info += 'Yield: ' + recipe_yield + ' | '
+                info += 'Yield: ' + str(recipe_yield) + ' | '
             info = info.strip()
 
             if info != '|':
