@@ -76,6 +76,7 @@ def strip_tags(str, strip_newline = False):
     ret_value = ret_value.replace(u"¾", u" 3/4")
     ret_value = ret_value.replace(u"⅓", u" 1/3")
     ret_value = ret_value.replace(u"⅔", u" 2/3")
+    ret_value = ret_value.replace(u"Â", u" ")
     ret_value = re.sub('\r', '', ret_value)
     ret_value = re.sub('\t', ' ', ret_value)
     if strip_newline:
