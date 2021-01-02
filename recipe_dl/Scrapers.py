@@ -253,7 +253,7 @@ def url2recipe_json(args, url):
 
             author = json_clean_value(source_json['metaData']['fields'], 'source')
             if author == '':
-                author=domain2publisher(url)
+                author = url2publisher(url)
             recipe_json['author'] = author
 
             # Ingredients
