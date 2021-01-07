@@ -15,7 +15,7 @@ html5lib==1.1             # via -r requirements.in, mf2py
 idna==2.9                 # via requests, tldextract
 isodate==0.6.0            # via rdflib
 language-tags==1.0.0      # via recipe-scrapers
-lxml==4.5.1               # via -r requirements.in, extruct, html-text
+lxml==4.6.2               # via -r requirements.in, extruct, html-text
 mf2py==1.1.2              # via extruct
 pyparsing==2.4.7          # via rdflib
 rdflib-jsonld==0.5.0      # via extruct
