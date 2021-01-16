@@ -11,7 +11,9 @@ from CustomPrint import custom_print_init, print_info, print_debug, print_error,
 from Scrapers import url2recipe_json
 from RecipeOutput import recipe_output
 
-__version__ = '0.2.8'
+from CustomExceptions import UrlError
+
+__version__ = '0.2.9'
 __author__ = u'Rodney Shupe'
 
 def parse_arguments(print_usage = False, detail = False):
@@ -187,7 +189,14 @@ def main(args=None):
     else:
         if not args.URL == [[]]:
             for url in args.URL[0]:
-                recipe_json = url2recipe_json(args, url)
+                try:
+                    recipe_json = url2recipe_json(args, url)
+                except UrlError as err:
+                    print_error ("Specified URL Not suported!")
+                    sys.exit (os.EX_SOFTWARE)
+                except Exception as err:
+                    print_error (err.args[1])     # arguments stored in .args
+                    sys.exit (os.EX_TEMPFAIL)
                 recipe_output(args, recipe_json)
         else:
             if not args.infile is None and args.infile != "":
@@ -196,8 +205,9 @@ def main(args=None):
                     recipe_json = json.load(json_file)
                     recipe_output(args, recipe_json)
             else:
-                print_error ("You must specify an input URL or input JSON file.\n")
+                print_error ("You must specify an input URL or input JSON file.")
                 parse_arguments(print_usage=True)
+                sys.exit (os.EX_USAGE)
 
 if __name__ == '__main__':
     args = parse_arguments()
