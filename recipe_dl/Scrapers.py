@@ -297,8 +297,9 @@ def url2recipe_json(args, url):
 
         page = BeautifulSoup(requests.get(url).text.replace("\u2014"," "), 'html5lib')
 
-        recipe_json['title'] = page.select_one('.article_title').text
-        recipe_json['description'] = page.select_one('p.paragraph:first-child').text
+        recipe_json['title'] = page.select_one('.entry-title').text
+        #recipe_json['description'] = page.select_one('p.paragraph:first-child').text
+        recipe_json['description'] = page.find("div", {'property':'description'}).text
         recipe_json['yield'] = page.select_one('div.yield span').text
 
         # Parse Times
