@@ -356,21 +356,28 @@ def url2recipe_json(args, url):
         minutes_total = minutes_prep + minutes_cook
         if minutes_prep == 0 and minutes_total > 0 and minutes_cook > 0:
             minutes_prep = minutes_total - minutes_cook
-        recipe_json['preptime'] = minutes2time(minutes_prep, '')
-        recipe_json['cooktime'] = minutes2time(minutes_cook, '')
-        recipe_json['totaltime'] = minutes2time(minutes_total)
+        # recipe_json['preptime'] = minutes2time(minutes_prep, '')
+        # recipe_json['cooktime'] = minutes2time(minutes_cook, '')
+        # recipe_json['totaltime'] = minutes2time(minutes_total)
 
         recipe_json['author'] = url2publisher(url)
 
         # Ingredients
         recipe_json['ingredient_groups'] = []
         recipe_json['ingredient_groups'].append(json.loads('{"title":"","ingredients":[]}'))
-        for ingredient in page.select_one('div.sqs-block-content ul').find_all('li', attrs={'class': None}):
+        ingredients = page.select_one('div.sqs-block div.sqs-block-content').find_all('p', attrs={'class': None, 'style': 'white-space:pre-wrap'})
+        ingredients = page.select('div.sqs-layout div.row div.sqs-block div.sqs-block-content p')
+        if not ingredients:
+            ingredients = page.select_one('div.sqs-block-content ul').find_all('li', attrs={'class': None})
+        for ingredient in ingredients:
             recipe_json['ingredient_groups'][0]['ingredients'].append(ingredient.text.replace("\n","").strip())
 
         # Directions
         out_instruction=[]
-        for instruction in page.select_one('div.sqs-block-content ol').find_all('li', attrs={'class': None}):
+        instructions = page.select_one('div.sqs-block-content ul').find_all('li', attrs={'class': None})
+        if not instructions:
+            instructions = page.select_one('div.sqs-block-content').find('ul', attrs={'data-rte-list': 'default'}).find_all('li', attrs={'class': None})
+        for instruction in instructions:
             try:
                 instruction_json = instruction
                 out_instruction.append(instruction_json['text'].text.replace("\n","").strip())
