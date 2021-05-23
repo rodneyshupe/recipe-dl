@@ -31,6 +31,10 @@ def url2publisher(url):
         publisher = "Food.com"
     elif domain == 'www.saveur.com':
         publisher = "Saveur"
+    elif domain == 'www.thecookingguy.com':
+        publisher = "Sam the Cooking Guy (Sam Zien)"
+    elif domain == 'www.thechunkychef.com':
+        publisher = "The Chunky Chef"
     elif domain == 'www.allrecipes.com':
         publisher = "AllRecipes"
     else:

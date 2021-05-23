@@ -333,6 +333,54 @@ def url2recipe_json(args, url):
         #raise UrlError(url, 'URL not supported.')
         return recipe_json
 
+    def stcg2json(args, url):
+        """ Loads Saveur URL and builds recipe JSON """
+
+        print_debug("Using Sam the Cooking Guy scraper...")
+        recipe_json={}
+        recipe_json['url'] = url
+
+        page = BeautifulSoup(requests.get(url).text.replace("\u2014"," "), 'html5lib')
+
+        title = page.select_one('title').text
+        recipe_json['title'] = re.sub('. SAM THE COOKING GUY', '', title)
+        recipe_json['yield'] = page.select_one('div.sqs-block-content p').text
+        if page.select('div.sqs-block-content p')[1]:
+            recipe_json['description'] = page.select('div.sqs-block-content p')[1].text
+
+        # Parse Times
+        minutes_prep = 0
+        minutes_cook = 0
+        #minutes_cook = iso8601.to_minutes(page.select_one('div.cook-time meta')['content'])
+        minutes_total = minutes_prep + minutes_cook
+        if minutes_prep == 0 and minutes_total > 0 and minutes_cook > 0:
+            minutes_prep = minutes_total - minutes_cook
+        recipe_json['preptime'] = minutes2time(minutes_prep, '')
+        recipe_json['cooktime'] = minutes2time(minutes_cook, '')
+        recipe_json['totaltime'] = minutes2time(minutes_total)
+
+        recipe_json['author'] = url2publisher(url)
+
+        # Ingredients
+        recipe_json['ingredient_groups'] = []
+        recipe_json['ingredient_groups'].append(json.loads('{"title":"","ingredients":[]}'))
+        for ingredient in page.select_one('div.sqs-block-content ul').find_all('li', attrs={'class': None}):
+            recipe_json['ingredient_groups'][0]['ingredients'].append(ingredient.text.replace("\n","").strip())
+
+        # Directions
+        out_instruction=[]
+        for instruction in page.select_one('div.sqs-block-content ol').find_all('li', attrs={'class': None}):
+            try:
+                instruction_json = instruction
+                out_instruction.append(instruction_json['text'].text.replace("\n","").strip())
+            except:
+                out_instruction.append(instruction.text.replace("\n","").strip())
+        recipe_json['direction_groups'] = []
+        recipe_json['direction_groups'].append(json.loads('{"group":"","directions":[]}'))
+        recipe_json['direction_groups'][0]['directions'] = out_instruction
+
+        return recipe_json
+
     def epicurious2json(args, url):
         """ Loads Epicurious URL and builds recipe JSON """
 
@@ -611,6 +659,8 @@ def url2recipe_json(args, url):
             recipe_json = epicurious2json(args, url)
     elif domain == 'www.saveur.com':
         recipe_json = saveur2json(args, url)
+    elif domain == 'www.thecookingguy.com':
+        recipe_json = stcg2json(args, url)
     else:
         if args.force_recipe_scraper:
             try:
