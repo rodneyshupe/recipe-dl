@@ -1,5 +1,8 @@
 .DS_Store
 
+# VS Code workspace
+*.code-workspace
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
