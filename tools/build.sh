@@ -12,7 +12,7 @@ function proceed() {
   fi
 }
 function beginswith() {
-  case $2 in
+  case "$2" in
     "$1"*)
       true;;
     *)
@@ -35,16 +35,20 @@ NEW_TAG="v${NEW_VERSION}"
 echo
 echo "Step 2: Update version in source files from ${LATEST_VERSION} to ${NEW_VERSION}."
 proceed
-sed -i "s/\/archive\/${LATEST_TAG}/\/archive\/${NEW_TAG}/g" "$ROOT_DIR/README.md"
-sed -i "s/\/archive\/${LATEST_VERSION}/\/archive\/${NEW_VERSION}/g" "$ROOT_DIR/README.md"
-sed -i "s/version = '${LATEST_VERSION}'/version = '${NEW_VERSION}'/g" "$ROOT_DIR/setup.py"
+sed -i "s/\/archive\/${LATEST_TAG}/\/archive\/${NEW_TAG}/g" "${ROOT_DIR}/README.md"
+sed -i "s/\/archive\/${LATEST_VERSION}/\/archive\/${NEW_VERSION}/g" "${ROOT_DIR}/README.md"
+sed -i "s/version = '${LATEST_VERSION}'/version = '${NEW_VERSION}'/g" "${ROOT_DIR}/setup.py"
+SAVEIFS=$IFS
+IFS=$(echo -en "\n\b")
 for file in $(find "${ROOT_DIR}" -type f -name "*.py" ); do
   if beginswith "${ROOT_DIR}/build" "${file}"; then
     : # Ignore file.
   else
-    sed -i "s/__version__ = '${LATEST_VERSION}'/__version__ = '${NEW_VERSION}'/g" "$file"
+    sed -i "s/__version__ = \'${LATEST_VERSION}\'/__version__ = \'${NEW_VERSION}\'/g" "${file}"
   fi
 done
+# restore $IFS
+IFS=$SAVEIFS
 
 echo
 echo "Step 3: Preview changes."
