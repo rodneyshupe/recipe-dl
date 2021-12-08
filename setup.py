@@ -27,7 +27,7 @@ setup(
         exclude=['*.rst', '*.txt', '*.md']
     ),
     install_requires=required(),
-    version = '0.3.0',
+    version = '0.3.1',
     license = "GNU General Public License v3.0",
     description = 'Recipe Downloader - Download Recipies from many websites and output as JSON, Markdown or reStructuredText.',
     long_description=read('README.md'),
