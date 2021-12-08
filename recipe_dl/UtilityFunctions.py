@@ -13,7 +13,7 @@ def url2publisher(url):
     """ Extracts a human readable Publisher name from a URL """
 
     domain = url2domain(url)
-    if domain == 'www.americatestkitchen.com':
+    if domain == 'www.americastestkitchen.com':
         publisher = "America's Test Kitchen"
     elif domain == 'www.cookscountry.com':
         publisher = "Cook's Country"

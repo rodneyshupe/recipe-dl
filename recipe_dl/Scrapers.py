@@ -655,7 +655,7 @@ def url2recipe_json(args, url):
     # Branch based on domain
     domain = url2domain(url)
     print_debug ("Branching based on domain (%s)..." % domain)
-    if domain in [ 'www.americatestkitchen.com','www.cookscountry.com','www.cooksillustrated.com' ]:
+    if domain in [ 'www.americastestkitchen.com','www.cookscountry.com','www.cooksillustrated.com' ]:
         recipe_json = ci2json(args, url)
     elif domain == 'www.epicurious.com':
         if args.force_recipe_scraper:
